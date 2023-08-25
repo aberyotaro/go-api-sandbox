@@ -1,12 +1,13 @@
 package user
 
 import (
-	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 
 	"github.com/aberyotaro/sample_api/internal/entity"
 	"github.com/aberyotaro/sample_api/internal/usecase"
+	"github.com/labstack/echo/v4"
 )
 
 type Handler struct {
@@ -19,23 +20,24 @@ func NewHandler(uc *usecase.User) *Handler {
 	}
 }
 
-func (h *Handler) GetUserByID(w http.ResponseWriter, r *http.Request) {
-	id, err := strconv.Atoi(r.URL.Query().Get("id"))
+func (h *Handler) GetUserByID(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		http.Error(w, "invalid id", http.StatusBadRequest)
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid id"})
 	}
+
 	user, err := h.usecase.GetUserByID(id)
 	if err != nil {
-		http.Error(w, "user not found", http.StatusNotFound)
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": fmt.Sprintf("message: %s", err.Error())})
 	}
 
-	res := &Response{
-		StatusCode: http.StatusOK,
-		User:       user,
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(res)
+	return c.JSON(
+		http.StatusOK,
+		&Response{
+			StatusCode: http.StatusOK,
+			User:       user,
+		},
+	)
 }
 
 type Response struct {

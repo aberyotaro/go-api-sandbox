@@ -1,17 +1,17 @@
 package main
 
 import (
-	"log"
-	"net/http"
-
-	"github.com/aberyotaro/sample_api/internal/app/user"
-	"github.com/aberyotaro/sample_api/internal/infrastructure"
-	"github.com/aberyotaro/sample_api/internal/usecase"
+	"github.com/aberyotaro/sample_api/internal/di"
+	"github.com/labstack/echo/v4"
 )
 
 func main() {
-	uh := user.NewHandler(usecase.NewUser(infrastructure.NewUser()))
+	e := echo.New()
+	v1 := e.Group("/v1")
 
-	http.HandleFunc("/user", uh.GetUserByID)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	h := di.NewHandlers()
+
+	v1.GET("/users/:id", h.UserHandler.GetUserByID)
+
+	e.Start(":8080")
 }
