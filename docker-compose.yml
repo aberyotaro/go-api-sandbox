@@ -7,3 +7,15 @@ services:
       dockerfile: Docker/api/Dockerfile
     ports:
       - "8080:8080"
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_DATABASE: local
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./Docker/database/mysql/data:/var/lib/mysql
