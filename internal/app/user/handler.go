@@ -2,10 +2,11 @@ package user
 
 import (
 	"encoding/json"
-	"github.com/aberyotaro/sample_api/internal/entity"
-	"github.com/aberyotaro/sample_api/internal/usecase"
 	"net/http"
 	"strconv"
+
+	"github.com/aberyotaro/sample_api/internal/entity"
+	"github.com/aberyotaro/sample_api/internal/usecase"
 )
 
 type Handler struct {

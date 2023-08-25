@@ -1,11 +1,12 @@
 package main
 
 import (
+	"log"
+	"net/http"
+
 	"github.com/aberyotaro/sample_api/internal/app/user"
 	"github.com/aberyotaro/sample_api/internal/infrastructure"
 	"github.com/aberyotaro/sample_api/internal/usecase"
-	"log"
-	"net/http"
 )
 
 func main() {
