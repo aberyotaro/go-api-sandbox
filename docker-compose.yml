@@ -4,7 +4,7 @@ services:
   api:
     build:
       context: .
-      dockerfile: Docker/api/Dockerfile
+      dockerfile: docker/api/Dockerfile
     ports:
       - "8080:8080"
 
@@ -18,4 +18,4 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./Docker/database/mysql/data:/var/lib/mysql
+      - ./docker/database/mysql/data:/var/lib/mysql
