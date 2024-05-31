@@ -5,6 +5,11 @@ services:
       dockerfile: docker/api/Dockerfile
     ports:
       - "8080:8080"
+    volumes:
+      - .:/go/src/app
+    command: air -c .air.toml
+    depends_on:
+      - db
 
   db:
     image: mysql:8.0

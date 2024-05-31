@@ -3,14 +3,14 @@ FROM golang:1.22.3-alpine
 ENV ROOT=/go/src/app
 WORKDIR ${ROOT}
 
-RUN apk update && apk add git
+RUN apk update
 
 COPY ../../ .
 
-RUN go mod tidy
+RUN go mod download
 
-RUN go build -o app ./cmd/
+RUN set -eux && \
+  apk add --no-cache git vim && \
+  go install github.com/cosmtrek/air@latest
 
 EXPOSE 8080
-
-CMD ["./app"]
