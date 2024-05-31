@@ -1,10 +1,13 @@
-FROM golang:1.20.0-alpine
+FROM golang:1.22.3-alpine
 
-WORKDIR /app
+ENV ROOT=/go/src/app
+WORKDIR ${ROOT}
+
+RUN apk update && apk add git
 
 COPY ../../ .
 
-RUN go mod download
+RUN go mod tidy
 
 RUN go build -o app ./cmd/
 
