@@ -1,28 +1,31 @@
 package infrastructure
 
-import "github.com/aberyotaro/sample_api/internal/entity"
+import (
+	"database/sql"
+	"fmt"
+	"log"
+
+	"github.com/aberyotaro/go-api-sandbox/internal/entity"
+)
 
 type User struct {
-	ID        int
-	FirstName string
-	LastName  string
 }
 
 func NewUser() *User {
 	return &User{}
 }
 
-func (i *User) GetByID(id int) (*entity.User, error) {
-	// todo: db access
-	dao := &User{
-		ID:        id,
-		FirstName: "Taro",
-		LastName:  "Yamada",
+func (i *User) GetByID(db *sql.DB, id int) (*entity.User, error) {
+	user := &entity.User{}
+
+	q := `SELECT id, first_name, last_name, created_at, updated_at, deleted_at FROM users WHERE id = ? AND deleted_at IS NULL`
+
+	if err := db.QueryRow(q, id).
+		Scan(&user.ID, &user.FirstName, &user.LastName, &user.CreatedAt, &user.UpdatedAt, &user.DeletedAt); err != nil {
+		log.Println(err)
 	}
 
-	return &entity.User{
-		ID:        dao.ID,
-		FirstName: dao.FirstName,
-		LastName:  dao.LastName,
-	}, nil
+	fmt.Println("user: ", *user)
+
+	return user, nil
 }

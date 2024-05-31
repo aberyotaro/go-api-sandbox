@@ -1,17 +1,26 @@
 package di
 
 import (
-	"github.com/aberyotaro/sample_api/internal/app/user"
-	"github.com/aberyotaro/sample_api/internal/infrastructure"
-	"github.com/aberyotaro/sample_api/internal/usecase"
+	"database/sql"
+
+	"github.com/aberyotaro/go-api-sandbox/internal/app/user"
+	"github.com/aberyotaro/go-api-sandbox/internal/infrastructure"
+	"github.com/aberyotaro/go-api-sandbox/internal/usecase"
 )
 
 type Handlers struct {
+	db          *sql.DB
 	UserHandler *user.Handler
 }
 
-func NewHandlers() *Handlers {
+func NewHandlers(db *sql.DB) *Handlers {
 	return &Handlers{
-		UserHandler: user.NewHandler(usecase.NewUser(infrastructure.NewUser())),
+		UserHandler: user.NewHandler(
+			usecase.NewUser(
+				db,
+				infrastructure.NewUser(),
+			),
+		),
+		// add new handler here
 	}
 }

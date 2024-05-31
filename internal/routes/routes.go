@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"github.com/aberyotaro/sample_api/internal/di"
+	"github.com/aberyotaro/go-api-sandbox/internal/di"
 	"github.com/gin-gonic/gin"
 )
 

@@ -1,9 +1,11 @@
 package repository
 
 import (
-	"github.com/aberyotaro/sample_api/internal/entity"
+	"database/sql"
+
+	"github.com/aberyotaro/go-api-sandbox/internal/entity"
 )
 
 type UserStore interface {
-	GetByID(id int) (*entity.User, error)
+	GetByID(db *sql.DB, id int) (*entity.User, error)
 }

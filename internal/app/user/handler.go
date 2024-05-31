@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/aberyotaro/sample_api/internal/usecase"
+	"github.com/aberyotaro/go-api-sandbox/internal/usecase"
 	"github.com/gin-gonic/gin"
 )
 
