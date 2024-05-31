@@ -1,13 +1,11 @@
 package user
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
-	"github.com/aberyotaro/sample_api/internal/entity"
 	"github.com/aberyotaro/sample_api/internal/usecase"
-	"github.com/labstack/echo/v4"
+	"github.com/gin-gonic/gin"
 )
 
 type Handler struct {
@@ -20,27 +18,19 @@ func NewHandler(uc *usecase.User) *Handler {
 	}
 }
 
-func (h *Handler) GetUserByID(c echo.Context) error {
+func (h *Handler) GetUserByID(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid id"})
+		c.JSON(http.StatusBadRequest, gin.H{"message": "invalid id"})
 	}
 
 	user, err := h.usecase.GetUserByID(id)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{"error": fmt.Sprintf("message: %s", err.Error())})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
 
-	return c.JSON(
-		http.StatusOK,
-		&Response{
-			StatusCode: http.StatusOK,
-			User:       user,
-		},
-	)
-}
-
-type Response struct {
-	StatusCode int          `json:"status_code"`
-	User       *entity.User `json:"user"`
+	c.JSON(http.StatusOK, gin.H{
+		"user":    user,
+		"message": "success",
+	})
 }
