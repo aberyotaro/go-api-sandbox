@@ -1,21 +1,18 @@
-FROM golang:1.22.3-alpine
+FROM golang:1.24-alpine
 
 ENV ROOT=/go/src/app
 WORKDIR ${ROOT}
 
-RUN apk update
+RUN apk update && \
+    apk add --no-cache vim make git
 
-RUN apk add --no-cache -t .build-dependencies \
-    mysql-client \
-    mysql-dev
+RUN go install github.com/air-verse/air@latest && \
+    go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 
-RUN set -eux && \
-  apk add --no-cache git vim && \
-  go install github.com/cosmtrek/air@latest && \
-  go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
-
-COPY ../../ .
-
+COPY go.mod go.sum ./
 RUN go mod download
 
+COPY . .
+
+# コンテナ内部で待ち受けるポート番号（ドキュメント的な意味合い）
 EXPOSE 8080

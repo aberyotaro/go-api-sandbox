@@ -3,13 +3,19 @@ services:
     build:
       context: .
       dockerfile: docker/api/Dockerfile
-    ports:
-      - "8080:8080"
     volumes:
-      - .:/go/src/app
-    command: air -c .air.toml
+      - .:/app
+    ports:
+      - "28080:8080"
     depends_on:
       - db
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USER=user
+      - DB_PASSWORD=pass
+      - DB_NAME=local
+    command: air -c .air.toml
 
   db:
     image: mysql:8.0
@@ -19,6 +25,9 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: pass
     ports:
-      - "3306:3306"
+      - "23306:3306"
     volumes:
-      - ./docker/database/mysql/data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
