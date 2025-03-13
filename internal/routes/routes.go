@@ -7,5 +7,6 @@ import (
 
 func SetupRoutes(g *gin.Engine, h *di.Handlers) {
 	v1 := g.Group("/v1")
-	v1.GET("/users/:id", h.UserHandler.GetUserByID)
+	v1.POST("/users/:id", h.UserHandler.GetUserByID)
+	v1.POST("/translate", h.TranslateHandler.Translate)
 }

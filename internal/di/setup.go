@@ -2,6 +2,7 @@ package di
 
 import (
 	"database/sql"
+	"github.com/aberyotaro/go-api-sandbox/internal/app/translate"
 
 	"github.com/aberyotaro/go-api-sandbox/internal/app/user"
 	"github.com/aberyotaro/go-api-sandbox/internal/infrastructure"
@@ -9,8 +10,9 @@ import (
 )
 
 type Handlers struct {
-	db          *sql.DB
-	UserHandler *user.Handler
+	db               *sql.DB
+	UserHandler      *user.Handler
+	TranslateHandler *translate.Handler
 }
 
 func NewHandlers(db *sql.DB) *Handlers {
@@ -20,6 +22,9 @@ func NewHandlers(db *sql.DB) *Handlers {
 				db,
 				infrastructure.NewUser(),
 			),
+		),
+		TranslateHandler: translate.NewHandler(
+			infrastructure.NewTranslate(),
 		),
 		// add new handler here
 	}
